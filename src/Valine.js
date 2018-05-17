@@ -117,15 +117,18 @@ class Valine {
             let appId = option.app_id || option.appId;
             let appKey = option.app_key || option.appKey;
             if (!appId || !appKey) {
-                _root.loading.hide();
-                throw '初始化失败，请检查你的appid或者appkey.';
-                return;
+                if(!av.applicationId || !av.applicationKey){
+                    _root.loading.hide();
+                    throw '初始化失败，请检查你的appid或者appkey.';
+                    return;
+                }
+            }else{
+                av.applicationId = null;
+                av.init({
+                    appId: appId,
+                    appKey: appKey
+                });
             }
-            av.applicationId = null;
-            av.init({
-                appId: appId,
-                appKey: appKey
-            });
             _root.v = av;
             defaultComment.url = (option.path || location.pathname).replace(/index\.(html|htm)/, '');
 
